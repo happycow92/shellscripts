@@ -1,6 +1,6 @@
 #!/bin/bash
 echo -e "***************************************"
-echo -e "* This script is written by Suhaas G  *"
+echo -e "* This script is written by Suhas G  *"
 echo -e "*          gsuhas@vmware.com          *"
 echo -e "***************************************"
 echo -e "This script fixes vCenter certificate parameter for proxy\n"
