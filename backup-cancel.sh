@@ -20,6 +20,7 @@ OPTIONS:
 EOF
 }
 
+# This if block checks if the postional parameter for getopts is empty. If empty. return usage block output. Else, continue.
 if [ $# -eq 0 ];
 then
     usage
