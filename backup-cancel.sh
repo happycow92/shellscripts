@@ -16,7 +16,8 @@ Below are the available fields
 OPTIONS:
    -h      Help
    -a      Active Job
-   -w      Waiting Job
+   -q      Waiting Queued Job
+   -c      Waiting Client Job
 EOF
 }
 
@@ -33,7 +34,7 @@ value_queued=$(mccli activity show | grep -i "Waiting-Queued" | cut -d ' ' -f 1)
 
 
 # This block does a flag input
-while getopts "haw" option
+while getopts "hacq" option
 do
         case $option in
                 a)
@@ -50,7 +51,7 @@ do
 
         fi
                 ;;
-                w)
+                c)
                 if [ -z $value_client ]
                 then
                         echo $value_client
@@ -62,6 +63,8 @@ do
                                 mccli activity cancel --id=$i
                         done
                 fi
+                ;;
+                q)
                 if [ -z $value_queued ]
                 then
                         printf "No jobs in waiting queued state\n"
