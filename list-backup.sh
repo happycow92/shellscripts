@@ -40,12 +40,12 @@ base=1073741824
 				fi
                 printf "| %-20s | %14s | %4s | %10s | %7s | %12s |\n" "$(echo $i | cut -d '_' -f 1)" "$number_of_backup" "$sizeInGB" "$type" "$pidType" "$isDD"
         done
-		
+baseMB=1048576	
 		for x in $agent_client
 		do	
 			number_of_backup=$(avmgr getb --path=/clients/VDPApps/$x --format=xml | tail -n+2 | wc -l)
 			size=$(avmgr getb --path=/clients/VDPApps/$x --format=xml | sed 's/ /\n/g' | grep totalbytes | head -n 1 | cut -d '=' -f 2 | tr -d '"' | cut -d '.' -f 1)
-			sizeInGB=$((size/base))GB
+			sizeInMB=$((size/baseMB))MB
 				partial=$(avmgr getb --path=/clients/VDPApps/$x --format=xml | sed 's/ /\n/g' | grep partial | cut -d '=' -f 2 | tr -d '"' | head -n 1)
 				if [ "$partial" == 0 ]
 				then
@@ -60,6 +60,6 @@ base=1073741824
 				else
 					isDD="Data Domain"
 			fi
-			printf "| %-20s | %14s | %4s | %10s | %7s | %12s |\n" "$(echo $x)" "$number_of_backup" "$sizeInGB" "$type" "Agent" "$isDD"
+			printf "| %-20s | %14s | %4s | %10s | %7s | %12s |\n" "$(echo $x)" "$number_of_backup" "$sizeInMB" "$type" "Agent" "$isDD"
 		done
 echo && echo
