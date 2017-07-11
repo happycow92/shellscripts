@@ -130,6 +130,7 @@ base=1073741824
 				
 			printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $y | cut -d '_' -f 1)" "$number_of_replication" "$sizeInGB" "$type" "$pidType" "$isDD" "REPLICATION" "$time"
 		done
-		
+
+echo && printf "For Bugs and Feature Requests, email gsuhas@vmware.com"			
 echo && echo
 
