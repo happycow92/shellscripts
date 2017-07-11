@@ -2,9 +2,9 @@
 
 clear
 
-echo -e "--------------------------------------------------------------------------------------------------"
-echo -e "| Client Name          | No. of Backups | Size | Is Partial | Type    | Storage Type | Data Type  |"
-echo -e "--------------------------------------------------------------------------------------------------"
+echo -e "----------------------------------------------------------------------------------------------------------------"
+echo -e "| Client Name          | No. of Backups | Size | Is Partial | Type    | Storage Type | Data Type  | Last Backup |"
+echo -e "----------------------------------------------------------------------------------------------------------------"
 
 vcenter_name=$(cat /usr/local/vdr/etc/vcenterinfo.cfg | grep vcenter-hostname | cut -d '=' -f 2)
 client_list=$(avmgr getl --path=/$vcenter_name/VirtualMachines | awk '{print $2}' | tail -n+2)
@@ -38,7 +38,18 @@ base=1073741824
 				else
 					isDD="Data Domain"
 				fi
-                printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s|\n" "$(echo $i | cut -d '_' -f 1)" "$number_of_backup" "$sizeInGB" "$type" "$pidType" "$isDD" "Backup"
+				
+				is_backed=$(avmgr getb --path=/$vcenter_name/VirtualMachines/$i --format=xml | sed -n 4p | grep -o backuplistrec)
+
+				if [ "$is_backed" == "backuplistrec" ]
+				then
+					date_backed=$(avmgr getb --path=/$vcenter_name/VirtualMachines/$i --format=xml | sed -n 4p | sed 's/ /\n/g' | grep created | head -n 1 | cut -d '=' -f 2 | tr -d '"')
+					time=$(t.pl $date_backed | awk '{print $3,$4,$6}')
+				else
+					time="No Backup"
+				fi
+
+                printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $i | cut -d '_' -f 1)" "$number_of_backup" "$sizeInGB" "$type" "$pidType" "$isDD" "Backup" "$time"
         done
 		
 		for x in $agent_client
@@ -60,7 +71,18 @@ base=1073741824
 				else
 					isDD="Data Domain"
 			fi
-			printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s|\n" "$(echo $x)" "$number_of_backup" "$sizeInGB" "$type" "Agent" "$isDD" "Backup"
+			
+			is_backed=$(avmgr getb --path=/clients/VDPApps/$x --format=xml | sed -n 4p | grep -o backuplistrec)
+
+				if [ "$is_backed" == "backuplistrec" ]
+				then
+					date_backed=$(avmgr getb --path=/clients/VDPApps/$x --format=xml | sed -n 4p | sed 's/ /\n/g' | grep created | head -n 1 | cut -d '=' -f 2 | tr -d '"')
+					time=$(t.pl $date_backed | awk '{print $3,$4,$6}')
+				else
+					time="No Backup"
+				fi
+
+			printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $x)" "$number_of_backup" "$sizeInGB" "$type" "Agent" "$isDD" "Backup" "$time"
 		done
 		
 		replicate_vdp=$(avmgr getl --path=/REPLICATE | sed -n 2p | awk '{print $2}')
@@ -95,8 +117,18 @@ base=1073741824
 				else
 					pidType="Linux"
 				fi
-			
-			printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s|\n" "$(echo $y | cut -d '_' -f 1)" "$number_of_replication" "$sizeInGB" "$type" "$pidType" "$isDD" "REPLICATION"
+				
+			is_backed=$(avmgr getb --path=/REPLICATE/$replicate_vdp/$replicate_vcenter/VirtualMachines/$y --format=xml | sed -n 4p | grep -o backuplistrec)
+
+				if [ "$is_backed" == "backuplistrec" ]
+				then
+					date_backed=$(avmgr getb --path=/REPLICATE/$replicate_vdp/$replicate_vcenter/VirtualMachines/$y --format=xml | sed -n 4p | sed 's/ /\n/g' | grep created | head -n 1 | cut -d '=' -f 2 | tr -d '"')
+					time=$(t.pl $date_backed | awk '{print $3,$4,$6}')
+				else
+					time="No Backup"
+				fi
+				
+			printf "| %-20s | %14s | %4s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $y | cut -d '_' -f 1)" "$number_of_replication" "$sizeInGB" "$type" "$pidType" "$isDD" "REPLICATION" "$time"
 		done
 		
 echo && echo
