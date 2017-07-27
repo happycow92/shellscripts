@@ -49,7 +49,7 @@ base=1073741824
 					time="No Backup"
 				fi
 
-                printf "| %-25s | %14s | %7s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $i | cut -d '_' -f 1)" "$number_of_backup" "$sizeInGB" "$type" "$pidType" "$isDD" "Backup" "$time"
+                printf "| %-29s | %14s | %7s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $i | cut -d '_' -f 1)" "$number_of_backup" "$sizeInGB" "$type" "$pidType" "$isDD" "Backup" "$time"
         done
 		
 		for x in $agent_client
@@ -82,7 +82,7 @@ base=1073741824
 					time="No Backup"
 				fi
 
-			printf "| %-25s | %14s | %7s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $x)" "$number_of_backup" "$sizeInGB" "$type" "Agent" "$isDD" "Backup" "$time"
+			printf "| %-29s | %14s | %7s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $x)" "$number_of_backup" "$sizeInGB" "$type" "Agent" "$isDD" "Backup" "$time"
 		done
 		
 		replicate_vdp=$(avmgr getl --path=/REPLICATE | sed -n 2p | awk '{print $2}')
@@ -128,7 +128,7 @@ base=1073741824
 					time="No Backup"
 				fi
 				
-			printf "| %-25s | %14s | %7s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $y | cut -d '_' -f 1)" "$number_of_replication" "$sizeInGB" "$type" "$pidType" "$isDD" "REPLICATION" "$time"
+			printf "| %-29s | %14s | %7s | %10s | %7s | %12s | %11s| %12s|\n" "$(echo $y | cut -d '_' -f 1)" "$number_of_replication" "$sizeInGB" "$type" "$pidType" "$isDD" "REPLICATION" "$time"
 		done
 
 echo && printf "For Bugs and Feature Requests, email gsuhas@vmware.com"			
