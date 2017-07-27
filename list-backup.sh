@@ -2,9 +2,9 @@
 
 clear
 
-echo -e "-----------------------------------------------------------------------------------------------------------------------"
-echo -e "| Client Name               | No. of Backups | Size    | Is Partial | Type    | Storage Type | Data Type  | Last Backup |"
-echo -e "-----------------------------------------------------------------------------------------------------------------------"
+echo -e "-----------------------------------------------------------------------------------------------------------------------------"
+echo -e "| Client Name                   | No. of Backups | Size    | Is Partial | Type    | Storage Type | Data Type  | Last Backup |"
+echo -e "-----------------------------------------------------------------------------------------------------------------------------"
 
 vcenter_name=$(cat /usr/local/vdr/etc/vcenterinfo.cfg | grep vcenter-hostname | cut -d '=' -f 2)
 client_list=$(avmgr getl --path=/$vcenter_name/VirtualMachines | awk '{print $2}' | tail -n+2)
