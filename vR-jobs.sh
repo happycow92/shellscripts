@@ -16,7 +16,6 @@ select configfilesdatastoremoid from virtualmachineentity;
 EOF
 
 cd /tmp
-touch format-output.txt
 name_array=($(awk '/name/{i=1;next}/ro*/{i=0}{if (i==1){i++;next}}i' info.txt))
 quiesce_array=($(awk '/networkcompressionenabled/{i=1;next}/ro*/{i=0}{if (i==1){i++;next}}i' info.txt))
 compression_array=($(awk '/quiesceguestenabled/{i=1;next}/ro*/{i=0}{if (i==1){i++;next}}i' info.txt))
