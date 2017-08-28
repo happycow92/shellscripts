@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 
-cd /opt/vmware/vpostgres/9.3/bin
+cd /opt/vmware/vpostgres/9.*/bin
 echo "Backing VRMS Database under /tmp"
 ./pg_dump -U vrmsdb -Fp -c > /tmp/DBBackup.bak 
 echo
