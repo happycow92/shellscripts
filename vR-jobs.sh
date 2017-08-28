@@ -5,6 +5,9 @@ echo -e " ----------------------------------------------------------------------
 echo -e "|     Virtual Machine              |   Network Compression   |  Quiesce   |   RPO     |  Datastore MoRef ID |"
 echo -e " -----------------------------------------------------------------------------------------------------------"
 
+echo "Backing VRMS Database under /tmp"
+./pg_dump -U vrmsdb -Fp -c > /tmp/DBBackup.bak 
+
 cd /opt/vmware/vpostgres/9.3/bin
 ./psql -U vrmsdb << EOF
 \o /tmp/info.txt
@@ -16,6 +19,7 @@ select configfilesdatastoremoid from virtualmachineentity;
 EOF
 
 cd /tmp
+touch format-output.txt
 name_array=($(awk '/name/{i=1;next}/ro*/{i=0}{if (i==1){i++;next}}i' info.txt))
 quiesce_array=($(awk '/networkcompressionenabled/{i=1;next}/ro*/{i=0}{if (i==1){i++;next}}i' info.txt))
 compression_array=($(awk '/quiesceguestenabled/{i=1;next}/ro*/{i=0}{if (i==1){i++;next}}i' info.txt))
@@ -29,5 +33,4 @@ do
 done
 
 rm -f info.txt
-
 echo && echo
